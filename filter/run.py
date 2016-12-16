@@ -8,16 +8,9 @@ import __init__
 while True:
     try :
         while True:
-            data = json.loads(__init__.socket.recv())
-            if(data["To"] ==2):
-                alert={}
-                alert["To"] = 3
-                alert["lat"]=data["lat"]
-                alert["lon"]=data["lon"]
-                alert["sname"]=data["sname"]
-
-                tosend=json.dumps(alert)
-                print tosend
-                __init__.socket.send(tosend)
+            data = {} #recived data
+            alert = filter(data)
+            tosend=json.dumps(alert)
+            print alert
     except Exception, e:
         print e

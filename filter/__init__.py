@@ -1,6 +1,9 @@
-import random
 import json
-from nanomsg import Socket, BUS
 
-socket = Socket(BUS)
-socket.connect('tcp://192.168.1.7:5551')
+def filter(data):
+    alert = {}
+    alert["To"] = 3
+    alert["lat"] = data["lat"]
+    alert["lon"] = data["lon"]
+    alert["sname"] = data["sname"]
+
