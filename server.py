@@ -1,7 +1,7 @@
 from nanomsg import Socket, BUS
 
 s1 = Socket(BUS)
-s1.bind('tcp://127.0.0.1:5551')
+s1.bind('tcp://*:5551')
 #a = str(raw_input())
 #s1.send(a)
 while True:
