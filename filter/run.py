@@ -1,5 +1,6 @@
 import json
 import __init__
+import os
 
 #data=json.loads('{"lat": 7.217592304415584, "sname": "Ship0.284266547671", "lon": 80.08063450635785, "shiptype": "Navy", "time": 1474300567.82514}')
 
@@ -8,16 +9,31 @@ import __init__
 while True:
     try :
         while True:
-            data = json.loads(__init__.socket.recv())
-            if(data["To"] ==2):
-                alert={}
-                alert["To"] = 3
-                alert["lat"]=data["lat"]
-                alert["lon"]=data["lon"]
-                alert["sname"]=data["sname"]
+            inpath = "/tmp/inpFifo"
+            outpath = "/tmp/outFifo"
+            try:
+                os.mkfifo(inpath)
+            except:
+                print "file is exsist"
+            try:
+                os.mkfifo(outpath)
+            except:
+                print "file is exsist"
 
-                tosend=json.dumps(alert)
-                print tosend
-                __init__.socket.send(tosend)
+            print "Wait for fifo read"
+            fifoin = open(inpath, 'r')
+            msg = fifoin.read()
+            fifoin.close()
+            data = json.loads(msg)
+            alert={}
+            alert["lat"]=data["lat"]
+            alert["lon"]=data["lon"]
+            alert["sname"]=data["sname"]
+
+            tosend=json.dumps(alert)
+            fifoout = open(outpath, 'w')
+            fifoout.write(tosend)
+            fifoout.close()
+            print tosend
     except Exception, e:
         print e

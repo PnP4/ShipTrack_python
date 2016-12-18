@@ -1,10 +1,5 @@
 import json
 from math import radians,sin,cos,asin,sqrt
-from nanomsg import Socket, BUS
-
-
-socket = Socket(BUS)
-socket.connect('tcp://192.168.1.7:5551')
 
 def haversine(lon1, lat1, lon2, lat2):
     # haversine formula

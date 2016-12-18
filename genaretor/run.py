@@ -2,7 +2,8 @@ import random
 import sys
 import time
 import json
-import __init__
+#import __init__
+import os
 
 while(True):
     try:
@@ -18,8 +19,16 @@ while(True):
           alert["time"] = time.time()
           alert["shiptype"] = "Navy"
           message=json.dumps(alert)
+          outpath = "/tmp/outFifo"
+          try:
+              os.mkfifo(outpath)
+          except:
+              print "file is exsist"
+
+          fifoout = open(outpath, 'w')
+          fifoout.write(message)
+          fifoout.close()
           print message
-          __init__.socket.send(message)
 
     finally:
         print >>sys.stderr, 'closing socket'
