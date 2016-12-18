@@ -30,5 +30,5 @@ while(True):
           fifoout.close()
           print message
 
-    finally:
-        print >>sys.stderr, 'closing socket'
+    except Exception, e:
+        print e
