@@ -1,9 +1,7 @@
 import random
-import sys
 import time
 import json
-#import __init__
-import os
+from lib.PnpLib import pnpprint, initPnp
 
 while(True):
     try:
@@ -12,23 +10,15 @@ while(True):
           lon=random.uniform(79.8562055, 80.5062055)
           sname="Ship"+str(random.random())
           alert={}
-          alert["To"] = 2
           alert["lat"]=lat
           alert["lon"] = lon
           alert["sname"] = sname
           alert["time"] = time.time()
           alert["shiptype"] = "Navy"
-          message=json.dumps(alert)
-          outpath = "/tmp/outFifo"
-          try:
-              os.mkfifo(outpath)
-          except:
-              print "file is exsist"
-
-          fifoout = open(outpath, 'w')
-          fifoout.write(message)
-          fifoout.close()
-          print message
+          initPnp()
+          tosend=json.dumps(alert)
+          pnpprint(tosend)
+          print tosend
 
     except Exception, e:
         print e

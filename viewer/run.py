@@ -1,20 +1,12 @@
 import json
-import sys
-import os
+from lib.PnpLib import pnpinput, initPnp
 
 while(True):
     try:
         while(True):
-            inpath = "/tmp/inpFifo"
-            try:
-                os.mkfifo(inpath)
-            except:
-                print "file is exsist"
-
+            initPnp()
             print "Wait for fifo read"
-            fifoin = open(inpath, 'r')
-            msg = fifoin.read()
-            fifoin.close()
+            msg = pnpinput()
             data = json.loads(msg)
             print data
 
