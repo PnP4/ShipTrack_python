@@ -23,6 +23,7 @@ def callback(ch, method, properties, body):
     alert["lat"]=data["lat"]
     alert["lon"]=data["lon"]
     alert["sname"]=data["sname"]
+    alert["id"]=data["id"]
 
     print data
     writer.writerow({'id': data["id"], 'msgtime': data["msgtime"], 'systime': time.time()})

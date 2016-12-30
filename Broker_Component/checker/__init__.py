@@ -29,6 +29,7 @@ def haversine(lon1, lat1, lon2, lat2):
 def callback(ch, method, properties, body):
     data = json.loads(body)
     dist=haversine(80.08063450635785,7.217592304415584,data["lon"],data["lat"])
+
     writer.writerow({'id': data["id"], 'msgtime': data["msgtime"], 'systime': time.time()})
     csvfile.flush()
     data["msgtime"] = time.time()
