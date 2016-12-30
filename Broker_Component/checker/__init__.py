@@ -1,6 +1,13 @@
 import json
 import pika
 from math import radians,sin,cos,asin,sqrt
+import csv
+import time
+
+csvfile=open(str(time.time())+'- Checker.csv', 'w')
+fieldnames = ['id', 'msgtime', 'systime']
+writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+writer.writeheader()
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(
         host='localhost'))
@@ -22,6 +29,9 @@ def haversine(lon1, lat1, lon2, lat2):
 def callback(ch, method, properties, body):
     data = json.loads(body)
     dist=haversine(80.08063450635785,7.217592304415584,data["lon"],data["lat"])
+    writer.writerow({'id': data["id"], 'msgtime': data["msgtime"], 'systime': time.time()})
+    csvfile.flush()
+    data["msgtime"] = time.time()
     print data
     if(dist>100):
         channel.basic_publish(exchange='',

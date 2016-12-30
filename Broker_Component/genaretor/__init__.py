@@ -3,6 +3,16 @@ import json
 import random
 import pika
 
+import csv
+
+
+csvfile=open(str(time.time())+'- GEN.csv', 'w')
+fieldnames = ['id', 'msgtime', 'systime']
+writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+writer.writeheader()
+
+
+
 connection = pika.BlockingConnection(pika.ConnectionParameters(
         host='localhost'))
 channel = connection.channel()
@@ -23,6 +33,8 @@ def genarator():
     alert["shiptype"] = "Navy"
 
     print json.dumps(alert)
+    writer.writerow({'id': alert["id"], 'msgtime': alert["msgtime"], 'systime': 'None'})
+    csvfile.flush()
     channel.basic_publish(exchange='',
               routing_key='datafilter',
               body= json.dumps(alert))
