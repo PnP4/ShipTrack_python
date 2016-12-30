@@ -31,10 +31,16 @@ def genarator():
     alert["sname"] = sname
     alert["time"] = time.time()
     alert["shiptype"] = "Navy"
-
+    alert["id"]=time.time()
+    alert["msgtime"]=time.time()
     print json.dumps(alert)
-    writer.writerow({'id': alert["id"], 'msgtime': alert["msgtime"], 'systime': 'None'})
-    csvfile.flush()
+    try:
+        writer.writerow({'id': alert["id"], 'msgtime': alert["msgtime"], 'systime': 'None'})
+        csvfile.flush()
+    except Exception as e:
+        print e
+
     channel.basic_publish(exchange='',
               routing_key='datafilter',
               body= json.dumps(alert))
+    time.sleep(0.5)
