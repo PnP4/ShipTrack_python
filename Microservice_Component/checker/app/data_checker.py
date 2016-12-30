@@ -4,6 +4,14 @@ import sys
 import json
 from math import radians,sin,cos,asin,sqrt
 import requests
+import csv
+import time
+
+csvfile=open(str(time.time())+'- Checker.csv', 'w')
+fieldnames = ['id', 'msgtime', 'systime']
+writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+writer.writeheader()
+
 # # Create a TCP/IP socket
 # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #
@@ -26,7 +34,9 @@ def haversine(lon1, lat1, lon2, lat2):
 def check(data):
     url = "http://localhost:5005"
     dist=haversine(80.08063450635785,7.217592304415584,data["lon"],data["lat"])
-
+    writer.writerow({'id': data["id"], 'msgtime': data["msgtime"], 'systime': time.time()})
+    csvfile.flush()
+    data["msgtime"] = time.time()
     if(dist>100):
         print json.dumps(data)
         requests.post(url, json=data)
